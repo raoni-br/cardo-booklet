@@ -1,3 +1,5 @@
+import createError from 'http-errors';
+
 export interface Book {
     id: string; // ISBN
     // userId: string;
@@ -22,7 +24,7 @@ export class BookModel {
 
     createBook(book: Book): void {
         if (this.getBookById(book.id)) {
-            throw new Error('Book is already registered');
+            throw createError(400, 'Book is already registered');
         }
         global.bookCatalog.push(book);
     }
@@ -30,9 +32,10 @@ export class BookModel {
     updateBook(updatedBook: Book): Book {
         const book = this.getBookById(updatedBook.id);
         if (!book) {
-            throw new Error('Book not found');
+            throw createError(400, 'Book not found');
         }
 
+        console.log(book);
         // replace book in catalog
         global.bookCatalog.splice(global.bookCatalog.indexOf(book), 1, updatedBook);
 
@@ -42,7 +45,7 @@ export class BookModel {
     deleteBook(id: string): void {
         const book = this.getBookById(id);
         if (!book) {
-            throw new Error('Book not found');
+            throw createError(400, 'Book not found');
         }
 
         // delete book in catalog
