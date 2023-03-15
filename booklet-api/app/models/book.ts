@@ -1,22 +1,51 @@
-const books: Book[] = []; // in-memory book database
-
-interface Book {
+export interface Book {
     id: string; // ISBN
+    // userId: string;
     title: string;
     author: string;
     releaseYear: number;
 }
 
-export class BookModel {
-    private username: string;
+// There is no requirement to manage books for each user.
+// That means that the a user can manage all books, regardless of who is the owner.
 
-    constructor(username: string) {
-        this.username = username;
+export class BookModel {
+    constructor() {}
+
+    getAllBooks(): Book[] {
+        return global.bookCatalog;
     }
 
-    getBooksByUser() {} // Book[]
-    getBookById(id: string) {} // Book
-    createBook(book: Book) {} // Book
-    updateBook(book: Book) {} // Book
-    deleteBook(id: string) {} // Book
+    getBookById(id: string): Book | null {
+        return global.bookCatalog.find((book) => (book.id === id)) || null;
+    }
+
+    createBook(book: Book): void {
+        if (this.getBookById(book.id)) {
+            throw new Error('Book is already registered');
+        }
+        global.bookCatalog.push(book);
+    }
+
+    updateBook(updatedBook: Book): Book {
+        const book = this.getBookById(updatedBook.id);
+        if (!book) {
+            throw new Error('Book not found');
+        }
+
+        // replace book in catalog
+        global.bookCatalog.splice(global.bookCatalog.indexOf(book), 1, updatedBook);
+
+        return updatedBook;
+    }
+
+    deleteBook(id: string): void {
+        const book = this.getBookById(id);
+        if (!book) {
+            throw new Error('Book not found');
+        }
+
+        // delete book in catalog
+        global.bookCatalog.splice(global.bookCatalog.indexOf(book), 1);
+    }
 }
