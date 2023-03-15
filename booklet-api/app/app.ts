@@ -27,6 +27,8 @@ class BookletApp {
         this.setupMiddleware();
         this.setupRoutes();
         this.setupErrorHandler();
+
+        global.bookCatalog = []; // initialize book catalog (in-memory store)
     }
 
     private setupMiddleware(): void {
