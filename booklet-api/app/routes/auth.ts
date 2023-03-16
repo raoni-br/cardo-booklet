@@ -1,18 +1,31 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
+
+import { appPassport } from '../middleware/auth/passport';
+import { registerUser } from '../controllers/auth';
 
 export const authRouter = express.Router();
 
 /* POST signup */
-authRouter.post('/signup', function (req: Request, res: Response) {
-    res.send('respond with a resource');
-});
+authRouter.post('/signup', registerUser);
 
 /* POST login */
-authRouter.post('/login', function (req: Request, res: Response) {
-    res.send('respond with a resource');
+const loginOptions = {
+  session: false,
+  failureRedirect: '/auth/login',
+  failureFlash: true,
+};
+
+authRouter.post('/login', appPassport.authenticate('local', loginOptions), async (req, res) => {
+  console.log(req.user);
+  // // Create jwt token
+  // const token = await generateToken(res, user, rememberMe);
+  res.status(200).send('user logged in');
 });
 
 /* POST logout */
-authRouter.post('/logout', function (req: Request, res: Response) {
-  res.send('respond with a resource');
+authRouter.post('/logout', function (req: Request, res: Response, next: NextFunction) {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
 });

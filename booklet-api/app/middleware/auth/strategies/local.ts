@@ -3,12 +3,12 @@ import createHttpError from 'http-errors';
 
 import { UserModel } from '../../../models/user';
 
-function verifyUser(
+async function verifyUser(
     username: string,
     password: string,
     done: (error: any, user?: any, options?: IVerifyOptions) => void,
 ) {
-    if (!UserModel.verifyUser(username, password)) {
+    if (!await new UserModel().verifyUser({ username, password })) {
         done(createHttpError(400, 'Invalid username/password'), null);
     }
 

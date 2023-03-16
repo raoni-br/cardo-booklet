@@ -35,7 +35,6 @@ export class BookModel {
             throw createError(400, 'Book not found');
         }
 
-        console.log(book);
         // replace book in catalog
         global.bookCatalog.splice(global.bookCatalog.indexOf(book), 1, updatedBook);
 
