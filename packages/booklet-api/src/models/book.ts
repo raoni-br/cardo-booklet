@@ -1,19 +1,11 @@
 import createError from 'http-errors';
 
-export interface Book {
-    id: string; // ISBN
-    // userId: string;
-    title: string;
-    author: string;
-    releaseYear: number;
-}
+import { Book } from '@cardo-booklet/booklet-utils';
 
 // There is no requirement to manage books for each user.
 // That means that the a user can manage all books, regardless of who is the owner.
 
 export class BookModel {
-    constructor() {}
-
     getAllBooks(): Book[] {
         return global.bookCatalog;
     }

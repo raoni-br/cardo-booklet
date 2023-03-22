@@ -1,7 +1,8 @@
+import { UserInput } from '@cardo-booklet/booklet-utils';
 import fs from 'fs';
 import path from 'path';
 
-import { User, UserInput, UserModel } from './user';
+import { User, UserModel } from './user';
 
 interface UserTest {
     input: UserInput;

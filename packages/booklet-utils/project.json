@@ -1,0 +1,26 @@
+{
+  "name": "booklet-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/booklet-utils/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/booklet-utils",
+        "main": "packages/booklet-utils/src/index.ts",
+        "tsConfig": "packages/booklet-utils/tsconfig.lib.json",
+        "assets": ["packages/booklet-utils/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/booklet-utils/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

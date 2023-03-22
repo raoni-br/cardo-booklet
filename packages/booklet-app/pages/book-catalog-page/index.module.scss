@@ -1,0 +1,9 @@
+.bookCard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 2rem;
+}
+
+.addButton {
+    width: 10rem;
+}

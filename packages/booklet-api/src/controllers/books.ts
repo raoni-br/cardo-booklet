@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { Book, BookModel } from '../models/book';
+import { Book } from '@cardo-booklet/booklet-utils';
+import { BookModel } from '../models/book';
 
 export function getAllBooks(req: Request, res: Response, next: NextFunction) {
     try {

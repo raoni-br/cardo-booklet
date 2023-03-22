@@ -14,6 +14,7 @@ import session from 'express-session';
 
 // app imports
 import { indexRouter } from './routes';
+import { appPassport } from './middleware/auth/passport';
 
 // dotenv config
 config();
@@ -41,7 +42,7 @@ class BookletApp {
         this.app.use(express.urlencoded({ extended: false }));
 
         this.app.use(helmet());
-        this.app.use(cors({ origin: 'localhost:3000', credentials: true }));
+        this.app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
 
         this.app.use(
             session({
@@ -55,7 +56,7 @@ class BookletApp {
 
         this.app.use(logger('dev'));
 
-        // this.app.use(passport.initialize());
+        this.app.use(appPassport.initialize());
     }
 
     private setupRoutes(): void {

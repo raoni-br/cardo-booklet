@@ -1,4 +1,5 @@
-import { Book, BookModel } from './book';
+import { Book } from '@cardo-booklet/booklet-utils';
+import { BookModel } from './book';
 
 const testUser = 'testuser';
 const testBooks: { [key: string]: Book } = {

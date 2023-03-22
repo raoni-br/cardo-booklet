@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 
 import { appPassport } from '../middleware/auth/passport';
 import { registerUser } from '../controllers/auth';
+import { generateToken } from '../middleware/auth/token';
 
 export const authRouter = express.Router();
 
@@ -10,23 +11,24 @@ authRouter.post('/signup', registerUser);
 
 /* POST login */
 const loginOptions = {
-  session: false,
-  failureRedirect: '/auth/login',
-  failureFlash: true,
+    session: false,
+    failureRedirect: '/auth/login',
+    failureFlash: true,
 };
 
 authRouter.post('/login', appPassport.authenticate('local', loginOptions), async (req, res) => {
-  // // Create jwt token
-  // const token = await generateToken(res, user, rememberMe);
-  res.status(200).send('user logged in');
+    // Create jwt token
+    generateToken(res, req.user as string);
+    res.status(200).send('user logged in');
 });
 
 /* POST logout */
-authRouter.post('/logout', function (req: Request, res: Response) {
-  // req.logout(function(err) {
-  //   if (err) { return next(err); }
-  //   res.redirect('/');
-  // });
-
-  res.redirect('/');
+authRouter.post('/logout', function (req: Request, res: Response, next: NextFunction) {
+    req.logOut({ keepSessionInfo: false }, function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.clearCookie('jwt');
+        res.status(200).send('user logged out');
+    });
 });

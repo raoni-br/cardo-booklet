@@ -1,12 +1,13 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
+
+import '@picocss/pico';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to booklet-app!</title>
+        <title>Cardo Booklet</title>
       </Head>
       <main className="app">
         <Component {...pageProps} />

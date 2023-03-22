@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { body, param } from 'express-validator';
 
 import { getAllBooks, getBookById, createBook, updateBook, deleteBook } from '../controllers/books';

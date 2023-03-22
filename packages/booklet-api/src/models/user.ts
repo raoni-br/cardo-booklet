@@ -4,10 +4,7 @@ import crypto from 'crypto';
 
 import createError from 'http-errors';
 
-export interface UserInput {
-    username: string;
-    password: string;
-}
+import { UserInput } from '@cardo-booklet/booklet-utils';
 
 export interface User {
     username: string;
@@ -27,7 +24,7 @@ export class UserModel {
         if (userDataFilepath) {
             this.userDataFilePath = userDataFilepath;
         } else {
-            this.userDataFilePath = path.join(__dirname, '..', 'data', 'users.json');
+            this.userDataFilePath = path.join(__dirname, 'users.json');
         }
         this.readUserDataFile();
     }
@@ -41,16 +38,16 @@ export class UserModel {
         }
     }
 
-    private findUser(username: string): User | undefined {
-        return this.userData.find((user) => user.username.toLowerCase() === username.toLowerCase());
-    }
-
     private static convertFromStringToBuffer(value: string): Buffer {
         return Buffer.from(value, 'hex');
     }
 
     private static convertFromBufferToString(value: Buffer): string {
         return value.toString('hex');
+    }
+
+    public findUser(username: string): User | undefined {
+        return this.userData.find((user) => user.username.toLowerCase() === username.toLowerCase());
     }
 
     public verifyUser(input: UserInput): Promise<boolean> {
@@ -69,8 +66,9 @@ export class UserModel {
                 UserModel.hashKeyLength,
                 UserModel.hashAlgorithm,
                 (err, hashedPassword) => {
-                    if (err) { /* c8 ignore start */
-                        
+                    if (err) {
+                        /* c8 ignore start */
+
                         return reject(err);
                     } /* c8 ignore stop */
                     if (
@@ -103,7 +101,8 @@ export class UserModel {
                 UserModel.hashKeyLength,
                 UserModel.hashAlgorithm,
                 (err, hashedPassword) => {
-                    if (err) { /* c8 ignore start */
+                    if (err) {
+                        /* c8 ignore start */
                         return reject(err);
                     } /* c8 ignore stop */
 
@@ -118,9 +117,10 @@ export class UserModel {
                     const userDataJSON = JSON.stringify(this.userData, null, 2);
                     try {
                         fs.writeFileSync(this.userDataFilePath, userDataJSON, 'utf8');
-                    } catch (error) { /* c8 ignore start */
+                    } catch (error) {
+                        /* c8 ignore start */
                         console.log(error);
-                        throw createError(500, 'Error while saving new user to file');
+                        return reject(createError(500, 'Error while saving new user to file'));
                     } /* c8 ignore stop */
                     return resolve(true);
                 },
