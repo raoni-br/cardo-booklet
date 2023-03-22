@@ -1,6 +1,9 @@
 import useSWR, { useSWRConfig } from 'swr';
 import { useState } from 'react';
 
+// hooks
+import { fetchBookletApi } from 'packages/booklet-app/lib/booklet-api-utils';
+
 // types
 import { Book } from '@cardo-booklet/booklet-utils';
 
@@ -15,7 +18,7 @@ import styles from './index.module.scss';
 export interface BookCatalogPageProps {}
 
 const fetcher = () =>
-  fetch('http://localhost:3001/api/books', { credentials: 'include' }).then(
+  fetchBookletApi({ urlPath: '/api/books', method: 'GET' }).then(
     async (res) => {
       const bookCatalog: Book[] = await res.json();
       console.log('books retrieved', bookCatalog);
@@ -29,49 +32,29 @@ export function BookCatalogPage(props: BookCatalogPageProps) {
   const { data: bookCatalog, error, isLoading } = useSWR('/api/books', fetcher);
 
   const createBook = async (newBook: Book) => {
-    console.log('creating book', newBook);
-    const response = await fetch('http://localhost:3001/api/books', {
+    await fetchBookletApi({
+      urlPath: '/api/books',
       method: 'POST',
       body: JSON.stringify(newBook),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     });
-    console.log(response);
     mutate('/api/books');
   };
 
   const updateBook = async (updatedBook: Book) => {
-    console.log('updating book', updatedBook);
-    const response = await fetch(
-      `http://localhost:3001/api/books/${updatedBook.id}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(updatedBook),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      }
-    );
-    console.log(response);
+    await fetchBookletApi({
+      urlPath: `/api/books/${updatedBook.id}`,
+      method: 'PUT',
+      body: JSON.stringify(updatedBook),
+    });
     mutate('/api/books');
   };
 
   const deleteBook = async (deletedBook: Book) => {
-    console.log('deleting book', deletedBook);
-    const response = await fetch(
-      `http://localhost:3001/api/books/${deletedBook.id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      }
-    );
-    console.log(response);
+    await fetchBookletApi({
+      urlPath: `/api/books/${deletedBook.id}`,
+      method: 'DELETE',
+      body: JSON.stringify(deletedBook),
+    });
     mutate('/api/books');
   };
 

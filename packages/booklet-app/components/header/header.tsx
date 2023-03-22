@@ -1,22 +1,20 @@
 import { MouseEvent } from 'react';
-import { useUser } from '../../lib/user-hooks';
 import Router from 'next/router';
+
+// app imports
+import { useUser } from '../../lib/user-hooks';
+import { fetchBookletApi } from 'packages/booklet-app/lib/booklet-api-utils';
 
 export default function Header() {
   const user = useUser({ redirectTo: null, redirectIfFound: false });
 
   const logOut = async (event: MouseEvent<HTMLElement>) => {
-    console.log('logging out');
     event.preventDefault();
 
-    const response = await fetch('http://localhost:3001/api/auth/logout', {
+    await fetchBookletApi({
+      urlPath: '/api/auth/logout',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     });
-    console.log(response);
     await Router.push('/login-page');
   };
 

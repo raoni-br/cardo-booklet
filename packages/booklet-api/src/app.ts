@@ -42,7 +42,7 @@ class BookletApp {
         this.app.use(express.urlencoded({ extended: false }));
 
         this.app.use(helmet());
-        this.app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
+        this.app.use(cors({ origin: process.env.BOOKLET_APP_CLIENT_URL, credentials: true }));
 
         this.app.use(
             session({
