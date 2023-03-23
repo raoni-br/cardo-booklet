@@ -63,6 +63,10 @@
       "options": {
         "lintFilePatterns": ["packages/booklet-app/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f packages/booklet-app/Dockerfile . -t booklet-app"
     }
   },
   "tags": []

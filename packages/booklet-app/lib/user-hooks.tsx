@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
 import useSWR from 'swr';
+import { fetchBookletApi } from './booklet-api-utils';
 
-const fetcher = (url) =>
-  fetch(`http://localhost:3001${url}`, {
-    credentials: 'include',
-  })
+const fetcher = (urlPath: string) =>
+  fetchBookletApi({ urlPath, method: 'GET' })
     .then((r) => r.json())
     .then((data) => {
       return { username: data?.username || null };
