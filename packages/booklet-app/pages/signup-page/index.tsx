@@ -27,7 +27,7 @@ export function SignupPage(props: SignupPageProps) {
 
   return (
     <div className="container">
-      <h1>Signup</h1>
+      <h1>Sign Up</h1>
       <UserForm onConfirm={onSignup}></UserForm>
       <a href="/login-page">Login</a>
     </div>

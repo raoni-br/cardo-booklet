@@ -14,11 +14,13 @@ WORKDIR /app
 RUN addgroup --system booklet-app && \
           adduser --system -G booklet-app booklet-app
 
-COPY dist/packages/booklet-app booklet-app
+COPY dist/packages/booklet-app/.next /.next
+COPY dist/packages/booklet-app/package.json /package.json
+
 RUN chown -R booklet-app:booklet-app .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix booklet-app --omit=dev -f install
+RUN npm --omit=dev -f install
 
-CMD [ "node", "booklet-app" ]
+CMD [ "npm", "start" ]
